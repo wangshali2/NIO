@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
+//Netty是一个异步事件驱动的网络应用框架，用于快速开发可维护的高性能协议服务器和客户端。
 public class GroupChatServer {
 
     public static void main(String[] args) throws Exception {

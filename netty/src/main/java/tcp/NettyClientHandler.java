@@ -1,4 +1,4 @@
-package http;
+package tcp;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -8,15 +8,7 @@ import io.netty.util.CharsetUtil;
 
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
-    //当通道就绪就会触发该方法
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("client： " + ctx);
-        //发送给server
-        ctx.writeAndFlush(Unpooled.copiedBuffer("hello服务端，我是客户端....", CharsetUtil.UTF_8));
-    }
-
-    //当通道有读取事件时，会触发
+    //当通道有读取事件时会触发 读取Server数据 自已看到
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
@@ -24,6 +16,15 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         System.out.println("服务器回复的消息:" + buf.toString(CharsetUtil.UTF_8));
         System.out.println("服务器的地址： "+ ctx.channel().remoteAddress());
     }
+
+    //当通道就绪就会触发
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("client： " + ctx);
+        //发送给server
+        ctx.writeAndFlush(Unpooled.copiedBuffer("hello服务端，我是客户端....", CharsetUtil.UTF_8));
+    }
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

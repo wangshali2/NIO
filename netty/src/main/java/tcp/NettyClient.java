@@ -1,4 +1,4 @@
-package http;
+package tcp;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -33,7 +33,7 @@ public class NettyClient {
             System.out.println("客户端 ok..");
 
             //启动客户端去连接服务器端
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 6668).sync();
+            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 16668).sync();
 
             //对关闭通道事件  进行监听
             channelFuture.channel().closeFuture().sync();

@@ -9,6 +9,8 @@ import java.nio.channels.SocketChannel;
 /**
  * @Author wsl
  * @Description
+ * 阻塞：ssc.accept()拿不到值不会反悔和立马输出，会一直卡着，直到有新的连接才返回；
+ * 非阻塞：拿不到值立马返回null。
  */
 public class TcpDemo {
     public static void main(String[] args) throws IOException {
@@ -36,13 +38,10 @@ public class TcpDemo {
     }
 
     public static void ClientDemo() throws IOException {
-        //创建SocketChannel
+
         SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 9999));
-        //设置阻塞和非阻塞
-        socketChannel.configureBlocking(true);
+        socketChannel.configureBlocking(false);
         System.out.println(socketChannel.isOpen() + "--" + socketChannel.isConnected());
-
-
 
         //读操作
         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
@@ -57,10 +56,13 @@ public class TcpDemo {
     }
 
     public static void ServerDemo() throws IOException, InterruptedException {
-        ByteBuffer buffer = ByteBuffer.wrap("hello wsl i love you".getBytes());
+
+
         ServerSocketChannel ssc = ServerSocketChannel.open();
         ssc.socket().bind(new InetSocketAddress(9999));
-        ssc.configureBlocking(true); //非阻塞
+        ssc.configureBlocking(false); //非阻塞
+
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
 
         //监听有新链接传入
         while (true) {
@@ -75,11 +77,12 @@ public class TcpDemo {
                 buffer.clear();
                 buffer.put("hello wsl i love you".getBytes());
                 buffer.flip();
-
                 sc.write(buffer);
-                Thread.sleep(2000);
+
                 sc.close();
             }
+
+            Thread.sleep(5000);
         }
     }
 }

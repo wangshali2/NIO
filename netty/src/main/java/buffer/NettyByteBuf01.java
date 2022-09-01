@@ -1,4 +1,4 @@
-package http;
+package buffer;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -6,6 +6,8 @@ import io.netty.buffer.Unpooled;
 /**
  * netty的buffer 3要素:capacity、readerIndex、writerIndex。
  * 不需要使用flip 进行反转,底层维护了 readerIndex 和 writerIndex。
+ *
+ * NIO的bug:Epoll  Bug会导致Selector空论旬，最终导致CPU100%.
  */
 public class NettyByteBuf01 {
 

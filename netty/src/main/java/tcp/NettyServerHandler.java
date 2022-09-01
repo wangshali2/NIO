@@ -1,4 +1,4 @@
-package http;
+package tcp;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -8,14 +8,12 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 /**
  * 自定义的Handler 需要继承netty 规定好的某个HandlerAdapter(规范)
  */
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
+    //当通道有读取事件时会触发 读取Client数据 自已看到
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
@@ -24,16 +22,14 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         Channel channel = ctx.channel();
         ChannelPipeline pipeline = ctx.pipeline(); //本质是一个双向链表
 
-
         //将 msg 转成一个 ByteBuf
-        //ByteBuf 是 Netty 提供的，不是 NIO 的 ByteBuffer.
         ByteBuf buf = (ByteBuf) msg;
         System.out.println("客户端发送消息是:" + buf.toString(CharsetUtil.UTF_8));
         System.out.println("客户端地址:" + channel.remoteAddress());
     }
 
 
-    //ChannelHandlerContext   保存 Channel 相关的所有上下文信息，同时关联一个 ChannelHandler 对象
+    //发送给Client
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
        //发送给client

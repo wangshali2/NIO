@@ -1,4 +1,4 @@
-package http;
+package tcp;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -8,9 +8,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
  * 1. 创建两个线程组 bossGroup 和 workerGroup
- * 2. bossGroup 处理连接请求 ；workerGroup：真正的和客户端业务处理
- * 3. 两个都是无限循环
+ * 2. bossGroup 负责接收客户端连接请求 ；workerGroup：负责网络读写操作；
+ * 3. 两个都是无限循环，每个 NioEventLoop 都有一个selector，用于监听绑定在其上的 socket 网络通道。
  * 4. bossGroup 和 workerGroup 含有的子线程(NioEventLoop)的个数:默认cpu核数 * 2
+ *
+ * 异步操作Bind、Write、Connect返回ChannelFuture
+ * http://localhost:16668/
  */
 public class NettyServer {
     public static void main(String[] args) throws Exception {
@@ -39,6 +42,7 @@ public class NettyServer {
                             System.out.println("socketChannel hashcode : " + ch.hashCode());
                             System.out.println("socketChannel pipeline : " + ch.pipeline());
 
+                            //1 channel --> 1 channelPipeline --> n handler
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new NettyServerHandler());
                         }
@@ -49,7 +53,7 @@ public class NettyServer {
             //服务端绑定端口
             final ChannelFuture channelFuture = bootstrap.bind(16668).sync();
 
-            //通过Future / ChannelFuture 注册监听器，监控我们关心的事件
+            //通过Future、ChannelFuture 注册监听器，监控异步I/O操作是否完成
             channelFuture.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
@@ -62,7 +66,7 @@ public class NettyServer {
             });
 
 
-            //对关闭通道事件  进行监听
+            //对关闭通道事件  进行监听   等待异步操作执行完毕
             channelFuture.channel().closeFuture().sync();
 
         } finally {

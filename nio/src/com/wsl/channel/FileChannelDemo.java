@@ -8,10 +8,13 @@ import java.nio.channels.FileChannel;
 /**
  * @Author wsl
  * @Description  InputStream、OutputStream、RandomAccessFile
+ * channel是双向的  从channel读取数据到buffer，或者从buffer写入数据到channel
+ *
+ * FileChannel不能复用 没有继承SelectableChannel
  */
 public class FileChannelDemo {
     public static void main(String[] args) throws IOException {
-        read();
+       read();
        // write();
        // fromTo();
        // many();
@@ -71,11 +74,10 @@ public class FileChannelDemo {
 
         //创建buffer对象
         ByteBuffer buffer = ByteBuffer.allocate(1024);
-        buffer.clear();
 
-        //写入内容
+        //写入内容  write
         buffer.put("newData".getBytes());
-        buffer.flip();
+        buffer.flip();  //要把数据从buffer中读出来写到file
 
         //FileChannel完成最终实现
         while (buffer.hasRemaining()) {
@@ -115,6 +117,7 @@ public class FileChannelDemo {
             }
             buf.clear(); //读后要clear，可以重新再写入
             bytesRead = channel.read(buf);
+           // buf.rewind();
         }
         file.close();
         System.out.println("结束了");

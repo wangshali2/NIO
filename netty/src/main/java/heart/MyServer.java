@@ -14,9 +14,9 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * 心跳检测，当服务器超过 3 秒没有读时，就提示读空闲；当服务器超过 5 秒没有写操作时，就提示写空闲；当服务器超过 7 秒没有读或者写操作时，就提示读写空闲
- */
+
+// 心跳检测，当服务器超过 3 秒没有读时，就提示读空闲；当服务器超过 5 秒没有写操作时，就提示写空闲；当服务器超过 7 秒没有读或者写操作时，就提示读写空闲
+
 public class MyServer {
     public static void main(String[] args) throws Exception {
 

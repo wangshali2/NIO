@@ -8,6 +8,10 @@ import java.util.concurrent.Executors;
 /**
  * @Author wsl
  * @Description 优化：用连接池，telnet 127.0.0.1 6666
+ *
+ * BIO：适合连接数据少且固定的架构
+ * NIO: 适合连接数多且短的架构 聊天 弹幕等
+ * AIO: 适合连接数多且长的架构
  */
 public class BIOServer {
     public static void main(String[] args) throws IOException {

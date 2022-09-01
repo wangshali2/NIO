@@ -9,8 +9,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * selector:选择器 多路复用器 单线程管理多个channel即多个网络连接
+ * selector:选择器 多路复用器 用来检查channel的状态是否可读可写。 单线程管理多个channel即多个网络连接
  * 多个客户端建立连接后，不需要对应一个个的线程了，这个连接注册到多路复用器上，通过多路复用器同时处理多个连接。
+ *
  */
 public class SelectorDemo1 {
 

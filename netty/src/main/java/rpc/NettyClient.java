@@ -30,6 +30,8 @@ public class NettyClient {
         return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 new Class<?>[]{serviceClass}, new InvocationHandler() {
                     @Override
+                    //method:hello
+                    //args:hello()里的参数
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
                         System.out.println("(proxy, method, args) 进入...." + (++count) + " 次");
@@ -38,8 +40,7 @@ public class NettyClient {
                             initClient();
                         }
 
-                        //设置要发给服务器端的信息
-                        //providerName：协议头，args[0]：就是客户端要发送给服务端的数据
+                        //设置要发给服务器端的信息  providerName：协议头；
                         client.setPara(providerName + args[0]);
 
                         return executor.submit(client).get();

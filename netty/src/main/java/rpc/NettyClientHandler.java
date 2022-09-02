@@ -36,6 +36,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter implements 
     @Override
     public synchronized Object call() throws Exception {
         System.out.println(" call1 被调用  ");
+        //hello()里的参数
         context.writeAndFlush(para);
         //进行wait
         wait(); //等待channelRead 方法获取到服务器的结果后，唤醒

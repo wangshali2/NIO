@@ -4,5 +4,9 @@ package rpc;
 public interface HelloService {
 
     String hello(String mes);
+
+    default String hello1(String mes) {
+        return "";
+    }
 }
 
